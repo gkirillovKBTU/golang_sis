@@ -21,12 +21,6 @@ pending -> processing -> completed
 - `processing`: the validator is comparing the two trees
 - `completed`: processing has finished, and the task stores its `ValidationResult`
 
-`Process` accepts only a `pending` task. A missing task returns `ErrTaskNotFound`; a task that is already processing or completed returns `ErrInvalidTaskState`. Input errors—including invalid roots, duplicate children, invalid node types, and invalid slack extensions—return errors wrapping `ErrInvalidFolderInput`
-
-## In-memory design
-
-`InMemoryTaskStore` implements the `TaskStore` interface. It keeps a map keyed by generated identifiers such as `task-1`, plus a numeric counter, so it can retain multiple independent tasks and their results for the life of the program. `FolderProcessor` is the domain-processing interface; `FolderValidator` is its implementation. The store copies inputs and returned task data, so callers cannot change stored tasks through shared slices or pointers. There is no database, filesystem persistence, goroutines, or external service involved; it is a in-memory design.
-
 ## CLI usage
 
 Run the supplied implementation's workflow from the module root:
